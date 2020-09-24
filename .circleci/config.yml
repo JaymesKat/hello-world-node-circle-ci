@@ -1,20 +1,20 @@
 version: 2.1
 
+defaults: &defaults
+  docker: # it uses the docker executor
+    - image: circleci/node:13.8.0
 jobs:
   print_hello:
-    docker: # it uses the docker executor
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - run: echo "hello"
 
   print_world:
-    docker: # it uses the docker executor
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - run: echo "world"
   save_hello_world_output:
-    docker: # it uses the docker executor
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - run: echo "hello world" > ~/output.txt
       - persist_to_workspace:
@@ -22,15 +22,13 @@ jobs:
           paths:
             - output.txt
   print_output_file:
-    docker: # it uses the docker executor
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/
       - run: cat ~/output.txt
   build:
-    docker:
-      - image: cimg/base:2020.01
+    <<: *defaults
     steps:
       - checkout
       - run:
