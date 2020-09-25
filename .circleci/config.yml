@@ -19,6 +19,16 @@ jobs:
           root: ~/
           paths:
             - output.txt
+  error_job:
+    <<: *defaults
+    steps:
+      - run: |
+          return 1
+      - run:
+          name: Log error
+          command: echo "Hello Error"
+          shell: /bin/bash
+          when: on_fail
   print_output_file:
     <<: *defaults
     steps:
@@ -36,3 +46,4 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
+      - error_job
